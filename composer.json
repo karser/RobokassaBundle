@@ -13,7 +13,7 @@
     "autoload": {
         "psr-0": { "Karser\\RobokassaBundle": "" }
     },
-    "target-dir": "Karser/SMSBundle",
+    "target-dir": "Karser/RobokassaBundle",
     "authors": [
         {
             "name": "Dmitry Poddubny",
