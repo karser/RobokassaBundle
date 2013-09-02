@@ -1,5 +1,5 @@
-RobokassaBundle for Symfony2
-============================
+Symfony2 Robokassa Bundle
+=========================
 
 This bundle allows you to accept payments with the use of Robokassa http://robokassa.ru/
 
