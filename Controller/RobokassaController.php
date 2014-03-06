@@ -59,7 +59,7 @@ class RobokassaController extends Controller
 
     private function getInstruction($id)
     {
-        $instruction = $this->getDoctrine()->getManager()->getRepository('JMSPaymentCoreBundle:PaymentInstruction')->find($inv_id);
+        $instruction = $this->getDoctrine()->getManager()->getRepository('JMSPaymentCoreBundle:PaymentInstruction')->find($id);
         if (empty($instruction)) {
             throw new \Exception('Cannot find instruction id='.$id);
         }
