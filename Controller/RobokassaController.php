@@ -35,4 +35,25 @@ class RobokassaController extends Controller
         return new Response('OK' . $inv_id);
     }
 
+    public function successAction(Request $request)
+    {
+        $out_sum = $request->get('OutSum');
+        $inv_id = $request->get('InvId');
+        $sign = $request->get('SignatureValue');
+        if (!$this->get('karser.robokassa.client.auth')->validate($sign, $out_sum, $inv_id)) {
+            return new Response('FAIL', 500);
+        }
+
+        $instruction = $this->getDoctrine()->getManager()->getRepository('JMSPaymentCoreBundle:PaymentInstruction')->find($inv_id);
+        $data = $instruction->getExtendedData();
+        return $this->redirect($data->get('return_url'));
+    }
+
+    public function failAction(Request $request)
+    {
+        $inv_id = $request->get('InvId');
+        $instruction = $this->getDoctrine()->getManager()->getRepository('JMSPaymentCoreBundle:PaymentInstruction')->find($inv_id);
+        $data = $instruction->getExtendedData();
+        return $this->redirect($data->get('cancel_url'));
+    }
 }

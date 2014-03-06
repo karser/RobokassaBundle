@@ -1,3 +1,11 @@
 karser_robokassa_callback:
     pattern:  /robokassa/callback
     defaults: { _controller: KarserRobokassaBundle:Robokassa:callback }
+
+karser_robokassa_success:
+    pattern:  /robokassa/success
+    defaults: { _controller: KarserRobokassaBundle:Robokassa:success }
+
+karser_robokassa_fail:
+    pattern:  /robokassa/fail
+    defaults: { _controller: KarserRobokassaBundle:Robokassa:fail }

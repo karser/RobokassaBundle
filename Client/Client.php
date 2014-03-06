@@ -79,7 +79,7 @@ class Client
         return $xml;
     }
 
-    public function requestOpState($inv_id, $out_sum)
+    public function requestOpState($inv_id)
     {
         $params = [
             'MerchantLogin' => $this->login,
@@ -91,6 +91,7 @@ class Client
         }
 
         $url = $this->getXmlMethodUrl('OpState');
-        return $this->sendXMLRequest($url, $params);
+        $result = $this->sendXMLRequest($url, $params);
+        return (int)$result->State->Code;
     }
 }

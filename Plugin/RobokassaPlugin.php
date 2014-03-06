@@ -54,18 +54,11 @@ class RobokassaPlugin extends AbstractPlugin
         }
         /** @var PaymentInstructionInterface $instruction */
         $instruction = $transaction->getPayment()->getPaymentInstruction();
-        /** @var ExtendedDataInterface $data */
-        $data        = $transaction->getExtendedData();
-
-        $result      = $this->client->requestOpState($instruction->getId(), $transaction->getRequestedAmount());
-
-        $state_code = (int)$result->State->Code;
+        $state_code = $this->client->requestOpState($instruction->getId());
         switch ($state_code) {
             case self::STATUS_COMPLETED:
                 break;
             case self::STATUS_PENDING:
-                $transaction->setReferenceNumber($data->get('inv_id'));
-
                 throw new PaymentPendingException('Payment is still pending');
 
             case self::STATUS_CANCELLED:
@@ -88,8 +81,7 @@ class RobokassaPlugin extends AbstractPlugin
                 throw $ex;
         }
 
-        $transaction->setReferenceNumber($data->get('inv_id'));
-        $transaction->setProcessedAmount((int) $result->Info->OutSum);
+        $transaction->setProcessedAmount($instruction->getAmount());
         $transaction->setResponseCode(PluginInterface::RESPONSE_CODE_SUCCESS);
         $transaction->setReasonCode(PluginInterface::REASON_CODE_SUCCESS);
 
@@ -97,7 +89,7 @@ class RobokassaPlugin extends AbstractPlugin
 
     public function createRedirectActionException(FinancialTransactionInterface $transaction)
     {
-        $actionRequest = new ActionRequiredException('User must authorize the transaction.');
+        $actionRequest = new ActionRequiredException('Redirect to pay');
         $actionRequest->setFinancialTransaction($transaction);
         $actionRequest->setAction(new VisitUrl($this->client->getRedirectUrl($transaction)));
         return $actionRequest;
