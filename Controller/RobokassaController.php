@@ -14,11 +14,11 @@ class RobokassaController extends Controller
         $out_sum = $request->get('OutSum');
         $inv_id = $request->get('InvId');
         $sign = $request->get('SignatureValue');
-        if (!$this->get('karser.robokassa.client.auth')->validate($sign, $out_sum, $inv_id)) {
+        if (!$this->get('karser.robokassa.client.auth')->validateResult($sign, $out_sum, $inv_id)) {
             return new Response('FAIL', 500);
         }
 
-        $instruction = $this->getDoctrine()->getManager()->getRepository('JMSPaymentCoreBundle:PaymentInstruction')->find($inv_id);
+        $instruction = $this->getInstruction($inv_id);
 
         /** @var FinancialTransactionInterface $transaction */
         if (null === $transaction = $instruction->getPendingTransaction()) {
@@ -40,11 +40,11 @@ class RobokassaController extends Controller
         $out_sum = $request->get('OutSum');
         $inv_id = $request->get('InvId');
         $sign = $request->get('SignatureValue');
-        if (!$this->get('karser.robokassa.client.auth')->validate($sign, $out_sum, $inv_id)) {
+        if (!$this->get('karser.robokassa.client.auth')->validateSuccess($sign, $out_sum, $inv_id)) {
             return new Response('FAIL', 500);
         }
 
-        $instruction = $this->getDoctrine()->getManager()->getRepository('JMSPaymentCoreBundle:PaymentInstruction')->find($inv_id);
+        $instruction = $this->getInstruction($inv_id);
         $data = $instruction->getExtendedData();
         return $this->redirect($data->get('return_url'));
     }
@@ -52,8 +52,17 @@ class RobokassaController extends Controller
     public function failAction(Request $request)
     {
         $inv_id = $request->get('InvId');
-        $instruction = $this->getDoctrine()->getManager()->getRepository('JMSPaymentCoreBundle:PaymentInstruction')->find($inv_id);
+        $instruction = $this->getInstruction($inv_id);
         $data = $instruction->getExtendedData();
         return $this->redirect($data->get('cancel_url'));
+    }
+
+    private function getInstruction($id)
+    {
+        $instruction = $this->getDoctrine()->getManager()->getRepository('JMSPaymentCoreBundle:PaymentInstruction')->find($inv_id);
+        if (empty($instruction)) {
+            throw new \Exception('Cannot find instruction id='.$id);
+        }
+        return $instruction;
     }
 }

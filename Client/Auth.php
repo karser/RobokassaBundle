@@ -27,9 +27,15 @@ class Auth
     }
 
 
-    public function validate($sign, $out_sum, $inv_id)
+    public function validateResult($sign, $out_sum, $inv_id)
     {
         $crc = md5($out_sum . ':' . $inv_id . ':' . $this->password2);
+        return strtoupper($sign) === strtoupper($crc);
+    }
+
+    public function validateSuccess($sign, $out_sum, $inv_id)
+    {
+        $crc = md5($out_sum . ':' . $inv_id . ':' . $this->password1);
         return strtoupper($sign) === strtoupper($crc);
     }
 }
