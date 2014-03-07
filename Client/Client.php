@@ -29,15 +29,14 @@ class Client
         $this->test = $test;
     }
 
-    public function getHost()
+    private function getWebServerUrl()
     {
-        return $this->test ? 'test.robokassa.ru/Index.aspx' : 'test.robokassa.ru/Index.aspx';
+        return $this->test ? 'http://test.robokassa.ru/Index.aspx' : 'https://auth.robokassa.ru/Merchant/Index.aspx';
     }
 
-    private function getXmlMethodUrl($method)
+    private function getXmlServerUrl()
     {
-        $url = $this->test ? 'test.robokassa.ru/Webservice/Service.asmx' : 'robokassa.ru/Webservice/Service.asmx';
-        return 'http://' . $url . '/' . $method;
+        return $this->test ? 'http://test.robokassa.ru/Webservice/Service.asmx' : 'https://merchant.roboxchange.com/WebService/Service.asmx';
     }
 
     public function getRedirectUrl(FinancialTransactionInterface $transaction)
@@ -57,7 +56,7 @@ class Client
             'SignatureValue' => $this->auth->sign($this->login, $transaction->getRequestedAmount(), $inv_id)
         ];
 
-        return sprintf('http://%s?%s', $this->getHost(), http_build_query($parameters));
+        return $this->getWebServerUrl() .'?' . http_build_query($parameters);
     }
 
     private function post($uri, array $parameters = [])
@@ -90,7 +89,7 @@ class Client
             $params['StateCode'] = 100;
         }
 
-        $url = $this->getXmlMethodUrl('OpState');
+        $url = $this->getXmlServerUrl() . '/' . 'OpState';
         $result = $this->sendXMLRequest($url, $params);
         return (int)$result->State->Code;
     }
