@@ -7,7 +7,6 @@ use JMS\Payment\CoreBundle\Model\ExtendedDataInterface;
 use JMS\Payment\CoreBundle\Model\FinancialTransactionInterface;
 use JMS\Payment\CoreBundle\Model\PaymentInstructionInterface;
 use JMS\Payment\CoreBundle\Plugin\Exception\BlockedException;
-use Sabre\XML\Reader;
 
 class Client
 {
