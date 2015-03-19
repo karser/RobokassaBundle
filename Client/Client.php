@@ -46,11 +46,17 @@ class Client
         /** @var ExtendedDataInterface $data */
         $data = $transaction->getExtendedData();
         $data->set('inv_id', $inv_id);
+        
+        $description = 'test desc';
+        if($data->has('description')) {
+            $description = $data->get('description');
+        }
+        
         $parameters = [
             'MrchLogin' => $this->login,
             'OutSum' => $transaction->getRequestedAmount(),
             'InvId' => $inv_id,
-            'Desc' => 'test desc',
+            'Desc' => $description,
             'IncCurrLabel' => '',
             'SignatureValue' => $this->auth->sign($this->login, $transaction->getRequestedAmount(), $inv_id)
         ];
