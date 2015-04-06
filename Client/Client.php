@@ -1,7 +1,7 @@
 <?php
 namespace Karser\RobokassaBundle\Client;
 
-use Guzzle\Http\Client as Guzzle;
+use GuzzleHttp\Client as Guzzle;
 
 use JMS\Payment\CoreBundle\Model\ExtendedDataInterface;
 use JMS\Payment\CoreBundle\Model\FinancialTransactionInterface;
@@ -66,9 +66,8 @@ class Client
 
     private function post($uri, array $parameters = [])
     {
-        $guzzle  = new Guzzle($uri);
-        $request = $guzzle->post(null, null, $parameters);
-        return $request->send();
+        $guzzle  = new Guzzle();
+        return $guzzle->post($uri, [ 'body' => $parameters ]);
     }
 
     private function sendXMLRequest($url, $params = [])
