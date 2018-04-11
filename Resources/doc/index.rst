@@ -79,6 +79,6 @@ Configuration
 =====
 Usage
 =====
-Usage `example <https://github.com/schmittjoh/JMSPaymentCoreBundle/blob/master/Resources/doc/usage.rst>`_
+Usage `example <http://jmspaymentcorebundle.readthedocs.io/en/stable/guides/accepting_payments.html>`_
 
 
