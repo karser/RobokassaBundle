@@ -67,6 +67,7 @@ Configuration
         password1: pass1
         password2: pass2
         test: true/false
+        debug: true/false
 
 
 .. code-block :: yml

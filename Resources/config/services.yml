@@ -12,7 +12,7 @@ services:
 
     karser.plugin.robokassa:
         class: %karser.plugin.robokassa.class%
-        arguments: [ "@karser.robokassa.client" ]
+        arguments: [ "@karser.robokassa.client", %karser_robokassa.debug% ]
         tags:
             - { name: "payment.plugin" }
 
