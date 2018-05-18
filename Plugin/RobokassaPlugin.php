@@ -37,8 +37,9 @@ class RobokassaPlugin extends AbstractPlugin
     /** @var  Client */
     private $client;
 
-    public function __construct(Client $client)
+    public function __construct(Client $client, $isDebug = false)
     {
+        parent::__construct($isDebug);
         $this->client = $client;
     }
 

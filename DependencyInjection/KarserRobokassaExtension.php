@@ -26,6 +26,7 @@ class KarserRobokassaExtension extends Extension
         $container->setParameter('karser_robokassa.password1', $config['password1']);
         $container->setParameter('karser_robokassa.password2', $config['password2']);
         $container->setParameter('karser_robokassa.test', $config['test']);
+        $container->setParameter('karser_robokassa.debug', $config['debug']);
 
         $loader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('services.yml');

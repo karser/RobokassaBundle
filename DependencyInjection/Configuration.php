@@ -25,6 +25,7 @@ class Configuration implements ConfigurationInterface
             ->scalarNode('password1')->isRequired()->end()
             ->scalarNode('password2')->isRequired()->end()
             ->scalarNode('test')->defaultTrue()->end()
+            ->scalarNode('debug')->defaultFalse()->end()
             ->end();
 
         return $treeBuilder;
