@@ -64,17 +64,24 @@ class Client
         return $this->getWebServerUrl() .'?' . http_build_query($parameters);
     }
 
+    /**
+     * @param string $uri
+     * @param array  $parameters
+     *
+     * @return \Psr\Http\Message\ResponseInterface
+     */
     private function post($uri, array $parameters = [])
     {
-        $guzzle  = new Guzzle();
-        return $guzzle->post($uri, [ 'body' => $parameters ]);
+        $guzzle = new Guzzle();
+
+        return $guzzle->post($uri, ['form_params' => $parameters]);
     }
 
     private function sendXMLRequest($url, $params = [])
     {
         $url = sprintf('%s?%s', $url, http_build_query($params));
         $response = $this->post($url, $params);
-        $xml = new \SimpleXMLElement($response->getBody());
+        $xml = new \SimpleXMLElement((string)$response->getBody());
         $result_code = (int) $xml->Result->Code;
         if ($result_code !== 0) {
             throw new BlockedException("Awaiting extended data");
