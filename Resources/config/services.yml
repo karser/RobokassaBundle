@@ -5,21 +5,21 @@ parameters:
     karser.robokassa.client.auth.class: Karser\RobokassaBundle\Client\Auth
 services:
     karser.form.type.robokassa:
-        class: %karser.form.type.robokassa.class%
+        class: '%karser.form.type.robokassa.class%'
         tags:
-            - { name: "payment.method_form_type" }
-            - { name: "form.type", alias: "robokassa" }
+            - { name: 'payment.method_form_type' }
+            - { name: 'form.type', alias: 'robokassa' }
 
     karser.plugin.robokassa:
-        class: %karser.plugin.robokassa.class%
-        arguments: [ "@karser.robokassa.client", %karser_robokassa.debug% ]
+        class: '%karser.plugin.robokassa.class%'
+        arguments: [ '@karser.robokassa.client', '%karser_robokassa.debug%' ]
         tags:
-            - { name: "payment.plugin" }
+            - { name: 'payment.plugin' }
 
     karser.robokassa.client:
-        class: %karser.robokassa.client.class%
-        arguments: [ "@karser.robokassa.client.auth", %karser_robokassa.login%, %karser_robokassa.test% ]
+        class: '%karser.robokassa.client.class%'
+        arguments: [ '@karser.robokassa.client.auth', '%karser_robokassa.login%', '%karser_robokassa.test%' ]
 
     karser.robokassa.client.auth:
-        class: %karser.robokassa.client.auth.class%
-        arguments: [ %karser_robokassa.password1%, %karser_robokassa.password2% ]
+        class: '%karser.robokassa.client.auth.class%'
+        arguments: [ '%karser_robokassa.password1%', '%karser_robokassa.password2%' ]
