@@ -30,12 +30,12 @@ class Client
 
     private function getWebServerUrl()
     {
-        return $this->test ? 'http://test.robokassa.ru/Index.aspx' : 'https://auth.robokassa.ru/Merchant/Index.aspx';
+        return 'https://auth.robokassa.ru/Merchant/Index.aspx';
     }
 
     private function getXmlServerUrl()
     {
-        return $this->test ? 'http://test.robokassa.ru/Webservice/Service.asmx' : 'https://merchant.roboxchange.com/WebService/Service.asmx';
+        return 'https://auth.robokassa.ru/Merchant/WebService/Service.asmx';
     }
 
     public function getRedirectUrl(FinancialTransactionInterface $transaction)
@@ -53,13 +53,17 @@ class Client
         }
         
         $parameters = [
-            'MrchLogin' => $this->login,
+            'MerchantLogin' => $this->login,
             'OutSum' => $transaction->getRequestedAmount(),
             'InvId' => $inv_id,
             'Desc' => $description,
             'IncCurrLabel' => '',
             'SignatureValue' => $this->auth->sign($this->login, $transaction->getRequestedAmount(), $inv_id)
         ];
+
+	    if ($this->test) {
+		    $parameters['IsTest'] = 1;
+	    }
 
         return $this->getWebServerUrl() .'?' . http_build_query($parameters);
     }
@@ -98,6 +102,7 @@ class Client
         ];
         if ($this->test) {
             $params['StateCode'] = 100;
+	        $parameters['IsTest'] = 1;
         }
 
         $url = $this->getXmlServerUrl() . '/' . 'OpState';
